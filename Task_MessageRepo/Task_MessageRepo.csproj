@@ -243,6 +243,14 @@
     <Compile Include="Migrations\201906161248386_migrat316.Designer.cs">
       <DependentUpon>201906161248386_migrat316.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201906161448431_migrat317.cs" />
+    <Compile Include="Migrations\201906161448431_migrat317.Designer.cs">
+      <DependentUpon>201906161448431_migrat317.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906161459135_migrat318.cs" />
+    <Compile Include="Migrations\201906161459135_migrat318.Designer.cs">
+      <DependentUpon>201906161459135_migrat318.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationContext.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
@@ -375,6 +383,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906161248386_migrat316.resx">
       <DependentUpon>201906161248386_migrat316.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906161448431_migrat317.resx">
+      <DependentUpon>201906161448431_migrat317.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906161459135_migrat318.resx">
+      <DependentUpon>201906161459135_migrat318.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

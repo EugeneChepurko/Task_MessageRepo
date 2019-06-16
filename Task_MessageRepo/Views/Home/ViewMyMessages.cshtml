@@ -14,60 +14,83 @@
     <title>Info</title>
 </head>
 <body>
+
+    <div>
+        <table>
+            <tr>
+                <td><p>MessageId</p></td>
+                <td><p>UserId</p></td>
+                <td><p>UserName</p></td>
+                <td><p>Message</p></td>
+            </tr>
+
+            @foreach (var v in Model)
+            {
+            <tr>
+                <td><p>@v.Id</p></td>
+                <td><p>@v.ApplicationUserId</p></td>
+                <td><p>@v.User.UserName</p></td>
+                <td><p>@v.Mess</p></td>
+            </tr>
+            }
+
+        </table>
+    </div>
+
     <div>
         <h3>Info</h3>
         <table>
             @*<tr>
-                <td><p>Id</p></td>
-                <td><p>Name</p></td>
-                <td><p>Time</p></td>
-                <td><p>Message</p></td>
-                <td></td>
-            </tr>*@
-            @*@foreach (var v in Model)
-            {
-                <tr>
-                    <td><p>@v.Id</p></td>
-                    <td><p>@v.UserMessages.</p></td>
-                    <td><p>@v.Date</p></td>
-                    <td><p>@v.Message</p></td>
-                </tr>
-            }*@
-            <tr>
-                @*<td><p>Id</p></td>
-                <td><p>Name</p></td>
-                <td><p>Time</p></td>
-                <td><p>Message</p></td>
-                <td></td>
+                    <td><p>Id</p></td>
+                    <td><p>Name</p></td>
+                    <td><p>Time</p></td>
+                    <td><p>Message</p></td>
+                    <td></td>
                 </tr>*@
-                @foreach (var el in Model)
+            @*@foreach (var v in Model)
                 {
                     <tr>
-                        <td><p>@Html.DisplayFor(m => el)</p></td>
-                        <td><p>@el</p></td>
-            </tr>
-            }
-        </table>
-
-
-        @foreach (var el in Model)
-        {
-            <ul>
-                <li><p>@Html.DisplayFor(m => el)</p></li>
-                @*<td><p>@el</p></td>*@
-            </ul>
-        }
-
-        @*<dd>
-            <ul>
-                @foreach (Message message in Model.)
+                        <td><p>@v.Id</p></td>
+                        <td><p>@v.UserMessages.</p></td>
+                        <td><p>@v.Date</p></td>
+                        <td><p>@v.Message</p></td>
+                    </tr>
+                }*@
+            <tr>
+                @*<td><p>Id</p></td>
+                    <td><p>Name</p></td>
+                    <td><p>Time</p></td>
+                    <td><p>Message</p></td>
+                    <td></td>
+                    </tr>*@
+                @foreach (var el in Model)
                 {
-                    <li>@player.Name (@player.Position)</li>
-                }
-            </ul>
-        </dd>*@
+                <tr>
+                    <td><p>@Html.DisplayFor(m => el)</p></td>
+                    <td><p>@el</p></td>
+                </tr>
+            }
+            </table>
 
-    </div>
-</body>
+
+            @foreach (var el in Model)
+            {
+                <ul>
+                    <li><p>@Html.DisplayFor(m => el)</p></li>
+                    @*<td><p>@el</p></td>*@
+                </ul>
+            }
+
+            @*<dd>
+                    <ul>
+                        @foreach (Message message in Model.)
+                        {
+                            <li>@player.Name (@player.Position)</li>
+                        }
+                    </ul>
+                </dd>*@
+
+        </div>
+    </body>
 </html>
 

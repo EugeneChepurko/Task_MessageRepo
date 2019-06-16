@@ -12,6 +12,6 @@ namespace Task_MessageRepo.Models
         public int Id { get; set; }
         public string ApplicationUserId { get; set; }
         public string Mess { get; set; }
-        //public ApplicationUser User { get; set; }
+        public virtual ApplicationUser User { get; set; }
     }
 }
