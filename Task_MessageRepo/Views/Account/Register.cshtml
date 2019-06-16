@@ -1,0 +1,51 @@
+﻿@model Task_MessageRepo.Models.RegisterModel
+
+@{
+    ViewBag.Title = "Register";
+}
+
+<h2>Регистрация</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div>
+        <h4>User registration</h4>
+        <hr />
+        @Html.ValidationSummary(false)
+        <div>
+            EMAIL
+            <div>
+                @Html.EditorFor(model => model.Email)
+            </div>
+        </div>
+
+        <div>
+            Year
+            <div>
+                @Html.EditorFor(model => model.Year)
+            </div>
+        </div>
+
+        <div>
+            Password
+            <div>
+                @Html.EditorFor(model => model.Password)
+            </div>
+        </div>
+
+        <div>
+            Confirm password
+            <div>
+                @Html.EditorFor(model => model.PasswordConfirm)
+            </div>
+        </div>
+
+        <div>
+            <div>
+                <input type="submit" value="Register" />
+            </div>
+        </div>
+    </div>
+}
