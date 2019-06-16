@@ -8,6 +8,10 @@
 @{
     ViewBag.Title = "Home Page";
 }
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link type="text/css" rel="stylesheet" href="../../Content/Site.css" />
+</head>
 
 <h3>Hello @User.Identity.GetUserName() !</h3>
 
@@ -18,7 +22,7 @@
         @* @Html.HiddenFor(m => m.UserName)
             @Html.TextBox("Name", User.Identity.GetUserName())*@
         @*@Html.TextBox(User.Identity.Name, "Enter name")*@
-        
+
         @Html.Label("enter a message") <br />
         <input type="text" name="LastMessage" />
         <p><input type="submit" value="Send message" /></p>
@@ -26,7 +30,7 @@
 </div>
 
 <div class="table">
-    <h3>List</h3>
+    <h3>List of Users</h3>
     <table>
         <tr>
             <td><p>Id</p></td>
@@ -41,7 +45,7 @@
                 <td><p>@v.Id</p></td>
                 <td><p>@v.UserName</p></td>
                 <td><p>@v.LastMessage</p></td>
-                <td><p><a href="/Home/Info/@v.Id">Infa</a></p></td>
+                <td><p><a href="/Home/ViewMyMessages/@v.Id">View all users</a></p></td>
                 <td><p><a href="/Home/DeleteFromBase/@v.Id">Delete</a></p></td>
             </tr>
         }
@@ -49,16 +53,16 @@
 </div>
 
 @*<div>
-    <h3>Messages</h3>
-    <table>
-        <tr>
-            <td><p>Message</p></td>
-        </tr>
-        @foreach(var m in Model)
-        {
+        <h3>Messages</h3>
+        <table>
             <tr>
-                <td><p>@m.LastMessage</p></td>
+                <td><p>Message</p></td>
             </tr>
-        }
-    </table>
-</div>*@
+            @foreach(var m in Model)
+            {
+                <tr>
+                    <td><p>@m.LastMessage</p></td>
+                </tr>
+            }
+        </table>
+    </div>*@

@@ -10,7 +10,7 @@ using Task_MessageRepo.Models;
 
 namespace Task_MessageRepo.Controllers
 {
-    
+
     public class HomeController : Controller
     {
         ApplicationContext db = new ApplicationContext();
@@ -44,13 +44,13 @@ namespace Task_MessageRepo.Controllers
         public ActionResult Index(ApplicationUser user)
         {
             IEnumerable<ApplicationUser> users = db.Users /*UserManager.Users*/;
-            
+
             ApplicationUser foundUser = UserManager.FindByEmail(User.Identity.Name);
             foundUser.LastMessage = user.LastMessage;
-           
-            if(foundUser.UserMessages == null)
+
+            if (foundUser.UserMessages == null)
             {
-                
+
                 message.ApplicationUserId = foundUser.Id;
                 message.Mess = foundUser.LastMessage;
 
@@ -64,17 +64,26 @@ namespace Task_MessageRepo.Controllers
 
                 foundUser.UserMessages.Add(message);
             }
-            
+
             //db.Entry(foundUser).State = System.Data.Entity.EntityState.Modified;
             IdentityResult result = UserManager.Update(foundUser);
-            
+
             //db.Users.Add(foundUser); // ??
             //db.Entry(foundUser).State = System.Data.Entity.EntityState.Modified;
-            
+
             db.SaveChanges();
             ViewBag.Customers = users;
             ViewBag.list = foundUser.UserMessages;
             return View();
+        }
+
+
+
+        [HttpGet]
+        public ActionResult ViewMyMessages(string id)
+        {
+            ApplicationUser user = db.Users.FirstOrDefault(i => i.Id == id);
+            return View(user.UserMessages.ToList());
         }
 
         public ActionResult About()

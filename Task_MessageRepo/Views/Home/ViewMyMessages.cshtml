@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.Title = "All messages";
+}
+@using Task_MessageRepo.Models
+@*@model MessageBank.Models.User*@
+@*@model IEnumerable<MessageBank.Models.User>*@
+@*@model IEnumerable<User>*@
+@model ICollection<Message>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Info</title>
+</head>
+<body>
+    <div>
+        <h3>Info</h3>
+        <table>
+            @*<tr>
+                <td><p>Id</p></td>
+                <td><p>Name</p></td>
+                <td><p>Time</p></td>
+                <td><p>Message</p></td>
+                <td></td>
+            </tr>*@
+            @*@foreach (var v in Model)
+            {
+                <tr>
+                    <td><p>@v.Id</p></td>
+                    <td><p>@v.UserMessages.</p></td>
+                    <td><p>@v.Date</p></td>
+                    <td><p>@v.Message</p></td>
+                </tr>
+            }*@
+            <tr>
+                @*<td><p>Id</p></td>
+                <td><p>Name</p></td>
+                <td><p>Time</p></td>
+                <td><p>Message</p></td>
+                <td></td>
+                </tr>*@
+                @foreach (var el in Model)
+                {
+                    <tr>
+                        <td><p>@Html.DisplayFor(m => el)</p></td>
+                        <td><p>@el</p></td>
+            </tr>
+            }
+        </table>
+
+
+        @foreach (var el in Model)
+        {
+            <ul>
+                <li><p>@Html.DisplayFor(m => el)</p></li>
+                @*<td><p>@el</p></td>*@
+            </ul>
+        }
+
+        @*<dd>
+            <ul>
+                @foreach (Message message in Model.)
+                {
+                    <li>@player.Name (@player.Position)</li>
+                }
+            </ul>
+        </dd>*@
+
+    </div>
+</body>
+</html>
+
