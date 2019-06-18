@@ -7,13 +7,13 @@ namespace Task_MessageRepo.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class migrat28 : IMigrationMetadata
+    public sealed partial class migrat331 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(migrat28));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(migrat331));
         
         string IMigrationMetadata.Id
         {
-            get { return "201906141510096_migrat28"; }
+            get { return "201906181331075_migrat331"; }
         }
         
         string IMigrationMetadata.Source

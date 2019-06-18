@@ -2,8 +2,6 @@
 @using Task_MessageRepo.Models
 @*@model Task_MessageRepo.Models.ApplicationUser*@
 @model IEnumerable<ApplicationUser>
-@*@model List<string>*@
-
 
 @{
     ViewBag.Title = "Home Page";
@@ -23,7 +21,7 @@
             @Html.TextBox("Name", User.Identity.GetUserName())*@
         @*@Html.TextBox(User.Identity.Name, "Enter name")*@
 
-        @Html.Label("enter a message") <br />
+        @Html.Label("enter a message (!Authorized person only!)") <br />
         <input type="text" name="LastMessage" />
         <p><input type="submit" value="Send message" /></p>
     }
@@ -33,11 +31,12 @@
     <h3>List of Users</h3>
     <table>
         <tr>
-            <td><p>Id</p></td>
-            <td><p>Name</p></td>
-            <td><p>Last Message</p></td>
-            <td></td>
-            <td></td>
+            <th><p>Id</p></th>
+            <th><p>Name</p></th>
+            <th><p>Last Message</p></th>
+            <th></th>
+            <th></th>
+            <th></th>
         </tr>
         @foreach (var v in ViewBag.Customers)
         {
@@ -45,24 +44,10 @@
                 <td><p>@v.Id</p></td>
                 <td><p>@v.UserName</p></td>
                 <td><p>@v.LastMessage</p></td>
-                <td><p><a href="/Home/ViewMyMessages/@v.Id">View all users</a></p></td>
-                <td><p><a href="/Home/DeleteFromBase/@v.Id">Delete</a></p></td>
+                <td><p><a href="/Home/ViewMyMessages/@v.Id">View all user messages</a></p></td>
+                <td><p><a href="/Home/ViewAllMessages/@v.Id">View ALL messages</a></p></td>
+                <td><p><a href="/Account/Delete/@v.Id">Delete user</a></p></td>
             </tr>
         }
     </table>
 </div>
-
-@*<div>
-        <h3>Messages</h3>
-        <table>
-            <tr>
-                <td><p>Message</p></td>
-            </tr>
-            @foreach(var m in Model)
-            {
-                <tr>
-                    <td><p>@m.LastMessage</p></td>
-                </tr>
-            }
-        </table>
-    </div>*@

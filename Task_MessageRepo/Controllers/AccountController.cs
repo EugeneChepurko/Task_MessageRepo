@@ -178,7 +178,7 @@ namespace Task_MessageRepo.Controllers
             {
                 IdentityResult result = await UserManager.DeleteAsync(user);
                 if (result.Succeeded)
-                    return RedirectToAction("GetUsers", "Home");
+                    return RedirectToAction("Index", "Home");
             }
             return RedirectToAction("Index", "Home");
         }

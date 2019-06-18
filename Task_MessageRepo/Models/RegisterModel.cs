@@ -8,17 +8,18 @@ namespace Task_MessageRepo.Models
 {
     public class RegisterModel
     {
-        [Required]
+        [Required(ErrorMessage = "Please enter Email")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please, enter year")]
         public int Year { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please, enter password")]
+        [Display(Name = "Password must contains three character categories: digits, uppercase, lowercase characters and special characters.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please, enter password")]
         [Compare("Password", ErrorMessage = "Password is not matched")]
         [DataType(DataType.Password)]
         public string PasswordConfirm { get; set; }
