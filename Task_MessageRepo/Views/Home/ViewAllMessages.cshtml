@@ -17,11 +17,11 @@
     <div>
         <table>
             <tr>
-                <th><p>@Html.ActionLink("Id", "ViewAllMessages")</p></th>
+                <th><p>@Html.ActionLink("Id", "ViewAllMessages", new { sortOrder = ViewBag.IdSortParam })</p></th>
                 <th><p>UserId</p></th>
                 <th><p>UserName</p></th>
                 <th><p>Message</p></th>
-                <th><p>@Html.ActionLink("Time", "ViewAllMessages")</p></th>
+                <th><p>@Html.ActionLink("Time", "ViewAllMessages", new { sortOrder = ViewBag.DateSortParam })</p></th>
                 <th><p>Messages deleting</p></th>
             </tr>
 

@@ -65,7 +65,7 @@ namespace Task_MessageRepo.Controllers
                 foundUser.UserMessages.Add(message);
             }
 
-            IdentityResult result = UserManager.Update(foundUser);
+            IdentityResult result = await UserManager.UpdateAsync(foundUser);
             if(result.Succeeded)
             {
                 await db.SaveChangesAsync();
@@ -109,14 +109,31 @@ namespace Task_MessageRepo.Controllers
 
         [Authorize]
         [HttpGet]
-        public ActionResult ViewAllMessages()
+        public ActionResult ViewAllMessages(string sortOrder)
         {
+            ViewBag.IdSortParam = string.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
+            ViewBag.DateSortParam = sortOrder == "Date" ? "date_desc" : "Date";
             var messages = from mess in db.Messages
                            select mess;
-            
+            switch (sortOrder)
+            {
+                case "id_desc":
+                    messages = messages.OrderByDescending(s => s.Id);
+                    break;
+                case "Date":
+                    messages = messages.OrderBy(s => s.DateTime);
+                    break;
+                case "date_desc":
+                    messages = messages.OrderByDescending(s => s.DateTime);
+                    break;
+                default:
+                    messages = messages.OrderBy(s => s.Id);
+                    break;
+            }
             return View(messages.ToList());
         }
 
+        [Authorize]
         public async Task<RedirectToRouteResult> DeleteMessage(int id)
         {    
             Message message = await db.Messages.FindAsync(id);
@@ -126,7 +143,7 @@ namespace Task_MessageRepo.Controllers
                 await db.SaveChangesAsync();
             }
             return RedirectToAction("ViewAllMessages");
-        }
+        }      
 
         public ActionResult About()
         {
