@@ -229,6 +229,7 @@
     <Content Include="Views\Home\ViewMyMessages.cshtml" />
     <Content Include="Views\Account\Delete.cshtml" />
     <Content Include="Views\Home\ViewAllMessages.cshtml" />
+    <Content Include="UsersDatabase.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

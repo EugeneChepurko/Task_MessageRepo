@@ -1,0 +1,23 @@
+[
+  {
+    "$id": "1",
+    "LastMessage": null,
+    "Year": 2001,
+    "UserMessages": null,
+    "Email": "g1@mail.ua",
+    "EmailConfirmed": false,
+    "PasswordHash": "ADZF6KOom3LNU6jMu7mTCcFO8roK33+QPDxb4fhRaEu/GoYxPz8shpJLayAnRtXt9A==",
+    "SecurityStamp": "dca60adf-4904-4fb1-b899-75cca9645558",
+    "PhoneNumber": null,
+    "PhoneNumberConfirmed": false,
+    "TwoFactorEnabled": false,
+    "LockoutEndDateUtc": null,
+    "LockoutEnabled": false,
+    "AccessFailedCount": 0,
+    "Roles": [],
+    "Claims": [],
+    "Logins": [],
+    "Id": "c316c741-b678-4f6c-9a75-fc166e9640dd",
+    "UserName": "g1@mail.ua"
+  }
+]
