@@ -22,17 +22,19 @@
                 <th><p>UserName</p></th>
                 <th><p>Message</p></th>
                 <th><p>@Html.ActionLink("Time", "ViewMyMessages", new { sortOrder = ViewBag.DateSortParam })</p></th>
+                <th><p>Messages deleting</p></th>
             </tr>
 
             @foreach (var v in Model)
             {
-                <tr>
-                    <td><p>@v.Id</p></td>
-                    <td><p>@v.ApplicationUserId</p></td>
-                    <td><p>@v.User.UserName</p></td>
-                    <td><p>@v.Mess</p></td>
-                    <td><p>@v.DateTime</p></td>
-                </tr>
+            <tr>
+                <td><p>@v.Id</p></td>
+                <td><p>@v.ApplicationUserId</p></td>
+                <td><p>@v.User.UserName</p></td>
+                <td><p>@v.Mess</p></td>
+                <td><p>@v.DateTime</p></td>
+                <td><p><a href="/Home/DeleteMessage/@v.Id">Delete message</a></p></td>
+            </tr>
             }
 
         </table>

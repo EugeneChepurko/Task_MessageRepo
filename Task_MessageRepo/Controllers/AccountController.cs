@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
@@ -25,7 +26,6 @@ namespace Task_MessageRepo.Controllers
             {
                 applicationUsers = new List<ApplicationUser>();
             }
-
             using (StreamReader file = System.IO.File.OpenText(@"E:\STEP\myhomework2017\Task_MessageRepo\Task_MessageRepo\UsersDatabase.json"))
             {
                 JsonSerializer serializer = new JsonSerializer();
@@ -57,6 +57,7 @@ namespace Task_MessageRepo.Controllers
         [HttpPost]
         public async Task<ActionResult> Register(RegisterModel model)
         {
+            string outputUsers = "";
             if (ModelState.IsValid)
             {
                 ApplicationUser user = new ApplicationUser { UserName = model.Email, Email = model.Email, Year = model.Year };
@@ -64,12 +65,12 @@ namespace Task_MessageRepo.Controllers
                 if (result.Succeeded)
                 {
                     applicationUsers.Add(user);
-                    using (StreamWriter file = System.IO.File.CreateText(@"E:\STEP\myhomework2017\Task_MessageRepo\Task_MessageRepo\UsersDatabase.json"))
+                    using (StreamReader file = System.IO.File.OpenText(@"E:\STEP\myhomework2017\Task_MessageRepo\Task_MessageRepo\UsersDatabase.json"))
                     {
-                        JsonSerializer serializer = new JsonSerializer();
-                        //serialize object directly into file stream
-                        serializer.Serialize(file, applicationUsers);
+                        //JsonSerializer serializer = new JsonSerializer();
+                        outputUsers = JsonConvert.SerializeObject(applicationUsers, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
                     }
+                    System.IO.File.WriteAllText(@"E:\STEP\myhomework2017\Task_MessageRepo\Task_MessageRepo\UsersDatabase.json", outputUsers);
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -143,24 +144,23 @@ namespace Task_MessageRepo.Controllers
                 IdentityResult result = await UserManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {
-                    // FOR adding to JSON without db
+                    // FOR adding to JSON WITHOUT db
                     ApplicationUser tempUser = applicationUsers.FirstOrDefault(i => i.Year == userYear);
                     using (StreamReader file = System.IO.File.OpenText(@"E:\STEP\myhomework2017\Task_MessageRepo\Task_MessageRepo\UsersDatabase.json"))
                     {
-                        JsonSerializer serializer = new JsonSerializer();
-
-                        List<ApplicationUser> jsonObj = (List<ApplicationUser>)serializer.Deserialize(file, typeof(List<ApplicationUser>));
-                        foreach (var year in jsonObj)
+                        //JsonSerializer serializer = new JsonSerializer();
+                        foreach (var year in applicationUsers)
                         {
                             if (year.Year == tempUser?.Year)
                             {
                                 year.Year = editModel.Year;
+                                break;
                             }
                         }
-                        output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
+                        output = JsonConvert.SerializeObject(applicationUsers, Formatting.Indented);
                     }
                     System.IO.File.WriteAllText(@"E:\STEP\myhomework2017\Task_MessageRepo\Task_MessageRepo\UsersDatabase.json", output);
-                    // END adding to JSON without db
+                    // END adding to JSON WITHOUT db
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -221,31 +221,47 @@ namespace Task_MessageRepo.Controllers
         [ActionName("Delete")]
         public async Task<ActionResult> DeleteConfirmed(string id)
         {
-            string output = "";
+            string outputUsers = "";
+            string outputMessages = "";
             ApplicationUser user = await UserManager.FindByIdAsync(id);
             if (user != null)
             {
+                user.UserMessages?.Clear();
+
                 IdentityResult result = await UserManager.DeleteAsync(user);
                 if (result.Succeeded)
                 {
+                    // FOR deleting from JSON WITHOUT db
                     using (StreamReader file = System.IO.File.OpenText(@"E:\STEP\myhomework2017\Task_MessageRepo\Task_MessageRepo\UsersDatabase.json"))
                     {
-                        JsonSerializer serializer = new JsonSerializer();
-
-                        List<ApplicationUser> jsonObj = (List<ApplicationUser>)serializer.Deserialize(file, typeof(List<ApplicationUser>));
-                        foreach (var userr in jsonObj)
+                        using (StreamReader file1 = System.IO.File.OpenText(@"E:\STEP\myhomework2017\Task_MessageRepo\Task_MessageRepo\MessagesDatabase.json"))
+                        {
+                            var messages = HomeController.jsonMessages.FindAll(s => s.ApplicationUserId == user.Id);
+                            foreach (var message in messages)
+                            {
+                                //if(message.ApplicationUserId == user.Id)
+                                //{
+                                HomeController.jsonMessages.Remove(message);
+                                //}
+                            }
+                            outputMessages = JsonConvert.SerializeObject(HomeController.jsonMessages, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+                        }
+                        
+                        foreach (var userr in applicationUsers)
                         {
                             if (userr.Id == id)
                             {
-                                jsonObj.Remove(userr);
+                                applicationUsers.Remove(userr);
                                 break;
                             }
                         }
-                        output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
+                        outputUsers = JsonConvert.SerializeObject(applicationUsers, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
                     }
-                    System.IO.File.WriteAllText(@"E:\STEP\myhomework2017\Task_MessageRepo\Task_MessageRepo\UsersDatabase.json", output);
+                    System.IO.File.WriteAllText(@"E:\STEP\myhomework2017\Task_MessageRepo\Task_MessageRepo\UsersDatabase.json", outputUsers);
+                    System.IO.File.WriteAllText(@"E:\STEP\myhomework2017\Task_MessageRepo\Task_MessageRepo\MessagesDatabase.json", outputMessages);
+                    // END deleting from JSON WITHOUT db
                     return RedirectToAction("Index", "Home");
-                }                              
+                }
             }
             return RedirectToAction("Index", "Home");
         }

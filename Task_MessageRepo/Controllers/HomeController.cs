@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -13,6 +15,22 @@ namespace Task_MessageRepo.Controllers
 {
     public class HomeController : Controller
     {
+        public static List<Message> jsonMessages = GetDataFromJson();
+
+        public static List<Message> GetDataFromJson()
+        {
+            if (jsonMessages == null)
+            {
+                jsonMessages = new List<Message>();
+            }
+
+            using (StreamReader file = System.IO.File.OpenText(@"E:\STEP\myhomework2017\Task_MessageRepo\Task_MessageRepo\MessagesDatabase.json"))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                var usersList_Deserialize = (List<Message>)serializer.Deserialize(file, typeof(List<Message>));
+                return usersList_Deserialize;
+            }
+        }
         ApplicationContext db = new ApplicationContext();
         Message message = new Message();
 
@@ -30,7 +48,7 @@ namespace Task_MessageRepo.Controllers
                 return HttpContext.GetOwinContext().Authentication;
             }
         }
-        
+
         [HttpGet]
         public ActionResult Index()
         {
@@ -44,6 +62,8 @@ namespace Task_MessageRepo.Controllers
         [HttpPost]
         public async Task<ActionResult> Index(ApplicationUser user)
         {
+            string outputUsers = "";
+            string outputMessages = "";
             IEnumerable<ApplicationUser> users = db.Users /*UserManager.Users*/;
 
             ApplicationUser foundUser = await UserManager.FindByEmailAsync(User.Identity.Name);
@@ -53,7 +73,7 @@ namespace Task_MessageRepo.Controllers
             if (foundUser.UserMessages == null)
             {
                 message.ApplicationUserId = foundUser.Id;
-                message.Mess = foundUser.LastMessage;             
+                message.Mess = foundUser.LastMessage;
 
                 foundUser.UserMessages = new List<Message>();
                 foundUser.UserMessages.Add(message);
@@ -66,14 +86,45 @@ namespace Task_MessageRepo.Controllers
             }
 
             IdentityResult result = await UserManager.UpdateAsync(foundUser);
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
+                // FOR adding to JSON WITHOUT db
+                using (StreamReader file = System.IO.File.OpenText(@"E:\STEP\myhomework2017\Task_MessageRepo\Task_MessageRepo\UsersDatabase.json"))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+
+                    using (StreamReader file_messages = System.IO.File.OpenText(@"E:\STEP\myhomework2017\Task_MessageRepo\Task_MessageRepo\MessagesDatabase.json"))
+                    {
+                        foreach (var _user in AccountController.applicationUsers)
+                        {
+                            if (_user.Email == User.Identity.Name)
+                            {
+                                _user.LastMessage = user.LastMessage;
+                                message.DateTime = DateTime.Now;
+                                message.ApplicationUserId = _user.Id;
+                                message.UserName = User.Identity.Name;
+                                message.Mess = _user.LastMessage;
+                                jsonMessages.Add(message);
+                                if (_user.UserMessages == null)
+                                {
+                                    _user.UserMessages = new List<Message>();
+                                    _user.UserMessages.Add(message);
+                                }
+                                else
+                                    _user.UserMessages.Add(message);
+                            }
+                        }
+                        outputUsers = JsonConvert.SerializeObject(AccountController.applicationUsers, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+                    }
+                    outputMessages = JsonConvert.SerializeObject(jsonMessages, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+                }
+                System.IO.File.WriteAllText(@"E:\STEP\myhomework2017\Task_MessageRepo\Task_MessageRepo\UsersDatabase.json", outputUsers);
+                System.IO.File.WriteAllText(@"E:\STEP\myhomework2017\Task_MessageRepo\Task_MessageRepo\MessagesDatabase.json", outputMessages);
+                // END adding to JSON WITHOUT db
                 await db.SaveChangesAsync();
             }
-
             //db.Users.Add(foundUser); // ??
             //db.Entry(foundUser).State = System.Data.Entity.EntityState.Modified;
-         
             ViewBag.Customers = users;
             ViewBag.list = foundUser.UserMessages;
             return View();
@@ -135,15 +186,15 @@ namespace Task_MessageRepo.Controllers
 
         [Authorize]
         public async Task<RedirectToRouteResult> DeleteMessage(int id)
-        {    
+        {
             Message message = await db.Messages.FindAsync(id);
-            if(message != null)
+            if (message != null)
             {
                 db.Messages.Remove(message);
                 await db.SaveChangesAsync();
             }
             return RedirectToAction("ViewAllMessages");
-        }      
+        }
 
         public ActionResult About()
         {

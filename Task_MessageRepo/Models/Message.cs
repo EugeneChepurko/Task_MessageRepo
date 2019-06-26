@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Task_MessageRepo.Models
 {
-    [JsonObject(IsReference = true)]
+    [JsonObject(IsReference = false)]
     public class Message
     {
         [Key]
