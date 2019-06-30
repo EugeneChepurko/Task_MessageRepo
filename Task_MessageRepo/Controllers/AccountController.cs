@@ -18,9 +18,9 @@ namespace Task_MessageRepo.Controllers
 {
     public class AccountController : Controller
     {
-        public static List<ApplicationUser> applicationUsers = GetDataFromJson();
+        internal static List<ApplicationUser> applicationUsers = GetDataFromJson();
 
-        public static List<ApplicationUser> GetDataFromJson()
+        private static List<ApplicationUser> GetDataFromJson()
         {
             if (applicationUsers == null)
             {
@@ -93,17 +93,19 @@ namespace Task_MessageRepo.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginModel model, string returnUrl)
-        {
+        {          
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await UserManager.FindAsync(model.Email, model.Password);
-                if (user == null)
+                ApplicationUser jsonUser = applicationUsers.Find(m => m.Email == model.Email);  // take data from json storage!!!
+                //ApplicationUser user = await UserManager.FindAsync(model.Email, model.Password);
+                //jsonUser = await UserManager.FindAsync(model.Email, model.Password);   
+                if (jsonUser == null)
                 {
                     ModelState.AddModelError("", "Login or password is incorrect.");
                 }
                 else
                 {
-                    ClaimsIdentity claim = await UserManager.CreateIdentityAsync(user,
+                    ClaimsIdentity claim = await UserManager.CreateIdentityAsync(jsonUser,
                                             DefaultAuthenticationTypes.ApplicationCookie);
                     AuthenticationManager.SignOut();
                     AuthenticationManager.SignIn(new AuthenticationProperties
