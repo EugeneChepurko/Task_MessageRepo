@@ -69,5 +69,7 @@ td, th {
 
 input {
     width: 150px;
+    border-radius: 3px;
+    transition: 2.0s all;
 }
 

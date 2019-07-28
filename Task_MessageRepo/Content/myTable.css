@@ -115,3 +115,11 @@ h2 {
         display: none;
     }
 }
+input {
+    width: 150px;
+    border-radius: 3px;
+    transition: 2.0s all;
+}
+    input:hover {
+        background-color: #c8c8c8;
+    }

@@ -31,6 +31,7 @@ namespace Task_MessageRepo.Controllers
                 return usersList_Deserialize;
             }
         }
+
         ApplicationContext db = new ApplicationContext();
         Message message = new Message();
 
@@ -75,7 +76,7 @@ namespace Task_MessageRepo.Controllers
                 message.ApplicationUserId = foundUser.Id;
                 message.Mess = foundUser.LastMessage;
 
-                foundUser.UserMessages = new List<Message>(3);
+                foundUser.UserMessages = new List<Message>();
                 foundUser.UserMessages.Add(message);
             }
             else
@@ -193,7 +194,7 @@ namespace Task_MessageRepo.Controllers
             string outputMessages = "";
             string outputUsers = "";
             using (StreamReader file = System.IO.File.OpenText(@"E:\STEP\myhomework2017\Task_MessageRepo\Task_MessageRepo\MessagesDatabase.json"))
-            {             
+            {
                 foreach (var messItem in jsonMessages)
                 {
                     foreach (var item in messItem.User.UserMessages)
@@ -216,12 +217,12 @@ namespace Task_MessageRepo.Controllers
             {
                 foreach (var user in AccountController.applicationUsers)
                 {
-                    if(user.UserMessages.Contains(user.UserMessages.FirstOrDefault(i => i.Id == id)))
+                    if (user.UserMessages.Contains(user.UserMessages.FirstOrDefault(i => i.Id == id)))
                     {
                         Message messToDel = user.UserMessages.FirstOrDefault(i => i.Id == id);
                         user?.UserMessages?.Remove(messToDel);
                         break;
-                    }                   
+                    }
                 }
                 outputUsers = JsonConvert.SerializeObject(AccountController.applicationUsers, Formatting.Indented);
             }
